@@ -9,11 +9,11 @@ export default function Cursor() {
   const damping = 0.75;
   const [direction, setDirection] = useState(0)
 
-  const requestRef = useRef(null);
+  const requestRef = useRef (0);
   const previousVelocity = useRef({ x:0, y:0 })
 
   useEffect(() => {
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
       setPosition({ x: event.clientX, y: event.clientY });
     };
 
@@ -49,7 +49,7 @@ export default function Cursor() {
     requestRef.current = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(requestRef.current);
-  }, [position]);
+  }, [position, direction]);
 
   return (
     <div

@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef} from "react";
 
+export interface Props {
+    cursorScale: number
+}
 
-export default function Cursor(props) {
+export default function Cursor(props: Props) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
   const size = 20
@@ -11,11 +14,11 @@ export default function Cursor(props) {
   const damping = 0.75;
   const [direction, setDirection] = useState(0)
 
-  const requestRef = useRef(null);
+  const requestRef = useRef(0);
   const previousVelocity = useRef({ x:0, y:0 })
 
   useEffect(() => {
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
       setPosition({ x: event.clientX, y: event.clientY });
     };
 
@@ -51,7 +54,7 @@ export default function Cursor(props) {
     requestRef.current = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(requestRef.current);
-  }, [position]);
+  }, [position, direction]);
 
   return (
     <div
