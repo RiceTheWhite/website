@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Roles(props) {
+export interface Props {
+  role: string
+}
+
+export default function Roles(props: Props) {
   const role = props.role
   if (!role) {
     return
