@@ -43,8 +43,10 @@ export default function RootLayout({
             </div>
           </div>
 
-
-          {children}
+          <div className="container mx-auto">
+            {children}
+          </div>
+          
           <div>footer</div>
           <Cursor cursorScale={cursorScale}></Cursor>
         </ThemeProvider>

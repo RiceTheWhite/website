@@ -12,7 +12,7 @@ import About from "@/components/sections/about/page";
 
 export default function Home() {
   return (
-    <div className="container mx-auto">
+    <div>
       <About></About>
     </div>
   );

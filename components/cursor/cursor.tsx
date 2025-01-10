@@ -39,8 +39,6 @@ export default function Cursor(props: Props) {
           }
 
           setDirection(Math.atan2(velocity.y, velocity.x)/ Math.PI*180)
-          console.log(direction)
-
           previousVelocity.current = velocity
           return {
             x: prev.x + velocity.x, // 0.1 is the easing factor
