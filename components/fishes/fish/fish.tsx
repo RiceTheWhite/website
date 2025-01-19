@@ -153,6 +153,14 @@ export default function Fish(props: Props) {
         context.closePath()
         context.fill()
 
+        context.strokeStyle = "green"
+        context.fillStyle = "lime"
+        outline.forEach(point => {
+          context.beginPath()
+          context.arc(point.x, point.y, 2, 0, 2 * Math.PI)
+          context.fill()
+          context.stroke()
+        });
 
 
 
