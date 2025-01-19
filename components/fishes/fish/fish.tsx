@@ -189,7 +189,7 @@ export default function Fish(props: Props) {
           </div>
         ))}
       </div>
-      <canvas width={window.innerWidth} height={window.innerHeight} className='m-0 p-0' ref={canvasRef}></canvas>
+      <canvas className='m-0 p-0 w-max h-max' ref={canvasRef}></canvas>
     </div>
 
   )
