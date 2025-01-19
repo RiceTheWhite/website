@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef} from "react";
 
 export interface Props {
-    cursorScale: number
+  cursorScale: number
 }
 
 export default function Cursor(props: Props) {
