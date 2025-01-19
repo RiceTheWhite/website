@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import React, { useState, useEffect, useRef, KeyboardEvent, useLayoutEffect, useMemo} from 'react'
+import React, { useState, useEffect, useRef, KeyboardEvent, useLayoutEffect } from 'react'
 
 export interface Props {
   startPosition: {x: number, y: number}
@@ -15,9 +15,9 @@ export default function Fish(props: Props) {
   const parts = 10
   const linkSize = 22.5
   const maxAngle = 5
-
-  const fishBody = useMemo(() => [68, 81, 84, 83, 77, 64, 51, 38, 32, 19], [])
+  const fishBody = [68, 81, 84, 83, 77, 64, 51, 38, 32, 19]
   
+  // Set initial fish body positions
   const [fishBodyPosition, setFishBodyPosition] = useState(new Array(parts).fill({x: startPosition.x, y: startPosition.y, dir: 0}))
   
   const requestRef = useRef(0);
@@ -100,7 +100,6 @@ export default function Fish(props: Props) {
         })
 
         let outline: {x: number, y: number}[] = []
-
         for (let index = 0; index < newPosition.length; index++) {
           const segment = newPosition[index]
           const radius = fishBody[index]/2
@@ -166,7 +165,7 @@ export default function Fish(props: Props) {
     return () => {
       cancelAnimationFrame(requestRef.current)
     }
-  }, [dir, fishBody])
+  }, [dir])
   
 
   return (
@@ -190,7 +189,7 @@ export default function Fish(props: Props) {
           </div>
         ))}
       </div>
-      <canvas className='m-0 p-0 w-max h-max' ref={canvasRef}></canvas>
+      <canvas width={window.innerWidth} height={window.innerHeight} className='m-0 p-0' ref={canvasRef}></canvas>
     </div>
 
   )
