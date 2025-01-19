@@ -165,7 +165,7 @@ export default function Fish(props: Props) {
     return () => {
       cancelAnimationFrame(requestRef.current)
     }
-  }, [dir])
+  }, [dir, fishBody])
   
 
   return (
