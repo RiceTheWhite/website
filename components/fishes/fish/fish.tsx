@@ -13,7 +13,7 @@ export default function Fish(props: Props) {
 
   const interpolationParts = 0
   const parts = 10
-  const linkSize = 22.5
+  const linkSize = 25
   const maxAngle = 5
   const fishBody = [68, 81, 84, 83, 77, 64, 51, 38, 32, 19]
   
@@ -87,11 +87,6 @@ export default function Fish(props: Props) {
 
           newPosition.push(newSegment)
         }
-        const canvas = canvasRef.current!
-        const context = canvas.getContext('2d')!
-        context.reset()
-        context.strokeStyle = 'red'
-        context.fillStyle = 'red'
 
         const deg2rad = (deg:number) => (deg*Math.PI/180)
         const circle_parametric = (x: number, y: number, radius: number, deg: number) => ({
@@ -107,8 +102,8 @@ export default function Fish(props: Props) {
 
           const center = {x: segment.x, y: segment.y}
           const front = circle_parametric(center.x, center.y, radius, dir)
-          const front_left = circle_parametric(center.x, center.y, radius, dir - 45)
-          const front_right = circle_parametric(center.x, center.y, radius, dir + 45)
+          const front_left = circle_parametric(center.x, center.y, radius, dir - 35)
+          const front_right = circle_parametric(center.x, center.y, radius, dir + 35)
           const left = circle_parametric(center.x, center.y, radius, dir - 90)
           const right = circle_parametric(center.x, center.y, radius, dir + 90)
           const back = circle_parametric(center.x, center.y, radius, dir + 180)
@@ -127,6 +122,11 @@ export default function Fish(props: Props) {
           }
         }
 
+
+        const canvas = canvasRef.current!
+        const context = canvas.getContext('2d')!
+        context.reset()
+
         // LINEAR!!!
           // context.beginPath()
           // context.moveTo(outline[0].x, outline[0].y)
@@ -136,6 +136,9 @@ export default function Fish(props: Props) {
           // }
           // context.lineTo(outline[0].x, outline[0].y)
           // context.stroke()
+
+        context.strokeStyle = 'white'
+        context.fillStyle = 'white'
 
         // QUADRATICS!!!
         context.beginPath()
@@ -153,15 +156,42 @@ export default function Fish(props: Props) {
         context.closePath()
         context.fill()
 
-        context.strokeStyle = "green"
-        context.fillStyle = "lime"
-        outline.forEach(point => {
+        // DEBUG
+
+        // context.strokeStyle = "lime"
+        // context.fillStyle = "lime"
+        // outline.forEach(point => {
+        //   context.beginPath()
+        //   context.arc(point.x, point.y, 4, 0, 2 * Math.PI)
+        //   context.fill()
+        //   context.stroke()
+        // });
+
+
+
+        // EYESSSSSSSSSSSSSSSSSSS
+
+        const fishHead = newPosition[0]
+        const radius = (fishBody[0]/2) - 10
+
+        const eyesPos = [
+          circle_parametric(fishHead.x, fishHead.y, radius, fishHead.dir + 70), 
+          circle_parametric(fishHead.x, fishHead.y, radius, fishHead.dir - 70)
+        ]
+
+        const eyesRadius = 6
+
+        context.strokeStyle = "black"
+        context.fillStyle = "black"
+        
+        for (let index = 0; index < eyesPos.length; index++) {
+          const eyePos: {x:number, y:number} = eyesPos[index]
+
           context.beginPath()
-          context.arc(point.x, point.y, 2, 0, 2 * Math.PI)
+          context.arc(eyePos.x, eyePos.y, eyesRadius, 0, 2 * Math.PI)
           context.fill()
           context.stroke()
-        });
-
+        }
 
 
         return newPosition
@@ -178,7 +208,7 @@ export default function Fish(props: Props) {
 
   return (
     <div>
-      <div>
+      {/* <div>
         {fishBodyPosition.map((item, index) => (
           <div
             key={index}
@@ -196,7 +226,7 @@ export default function Fish(props: Props) {
           >
           </div>
         ))}
-      </div>
+      </div> */}
       <canvas width={window.innerWidth} height={window.innerHeight} className='m-0 p-0' ref={canvasRef}></canvas>
     </div>
 
