@@ -36,6 +36,11 @@ export default function About() {
         </SelectContent>
       </Select>
 
+      <span className="m-auto">https://github.com/RiceTheWhite</span>
+      <span className="m-auto">discord: @antho1ogy</span>
+      <span className="m-auto">roblox (i dont play very often): https://www.roblox.com/users/2573059566/profile</span>
+
+
       <div className="m-auto">
         <Roles role={selectedValue}></Roles>
       </div>
