@@ -36,9 +36,9 @@ export default function About() {
         </SelectContent>
       </Select>
 
-      <span className="m-auto">https://github.com/RiceTheWhite</span>
-      <span className="m-auto">discord: @antho1ogy</span>
-      <span className="m-auto">roblox (i dont play very often): https://www.roblox.com/users/2573059566/profile</span>
+      <p className="m-auto">https://github.com/RiceTheWhite</p>
+      <p className="m-auto">discord: @antho1ogy</p>
+      <p className="m-auto">roblox (i dont play very often): https://www.roblox.com/users/2573059566/profile</p>
 
 
       <div className="m-auto">
