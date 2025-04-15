@@ -40,6 +40,8 @@ export default function About() {
       <p className="m-auto">discord: @antho1ogy</p>
       <p className="m-auto">roblox (i dont play very often): https://www.roblox.com/users/2573059566/profile</p>
 
+      <p>also there are cool things in /fishes and /softbody</p>
+
 
       <div className="m-auto">
         <Roles role={selectedValue}></Roles>
