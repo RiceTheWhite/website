@@ -36,7 +36,7 @@ export default function RootLayout({
               </div>
               <div className="px-8 flex flex-auto w-20 flex-row">
                 <h1>silliness:</h1>
-                <Slider onValueChange={(value) => setCursorScale(value[0])} className="mx-4 cursor-grab active:cursor-grabbing" defaultValue={[1]} min={0.1} max={5} step={0.1} />
+                <Slider onValueChange={(value: number[]) => setCursorScale(value[0])} className="mx-4 cursor-grab active:cursor-grabbing" defaultValue={[1]} min={0.1} max={5} step={0.1} />
                 <ModeToggle />
               </div>
                 
