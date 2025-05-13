@@ -1,9 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// app/page.tsx
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Track {
   track: {
@@ -28,15 +27,17 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
     left: number; 
     size: number 
   }>>([]);
+  const [containerHeight, setContainerHeight] = useState(1000);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const generateLayout = () => {
-      const containerWidth = 1200;
-      const containerHeight = 800;
-      const minSize = 150;
-      const maxSize = 320;
-      const padding = 30;
-      const maxAttempts = 100;
+      const containerWidth = containerRef.current?.clientWidth || 1200;
+      const minSize = 100;
+      const maxSize = 250;
+      const padding = 15;
+      const maxAttempts = 1000000000000;
+      let maxBottom = 0;
 
       const newPositions: Array<{ top: number; left: number; size: number }> = [];
 
@@ -45,10 +46,12 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
         let placed = false;
         let top=0, left=0, size=0;
 
+        left = Math.random() * (containerWidth - size);
+
         while (!placed && attempts < maxAttempts) {
           size = minSize + Math.random() * (maxSize - minSize);
-          top = Math.random() * (containerHeight - size - 60); // Reserve space for text
-          left = Math.random() * (containerWidth - size);
+          left = attempts % (containerWidth - size - padding*2) + padding; // Start with base height
+          top = Math.floor(attempts/(containerWidth - size - padding*2))
           placed = true;
 
           for (const existing of newPositions) {
@@ -57,8 +60,8 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
               left + size + padding > existing.left;
             
             const verticalOverlap = 
-              top < existing.top + existing.size + padding + 60 && // Extra vertical padding for text
-              top + size + padding + 60 > existing.top;
+              top < existing.top + existing.size + padding && 
+              top + size + padding > existing.top;
 
             if (horizontalOverlap && verticalOverlap) {
               placed = false;
@@ -66,12 +69,20 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
             }
           }
           
-          attempts++;
+          attempts+=20;
+        }
+
+        // Track the lowest element position
+        const bottom = top + size;
+        if (bottom > maxBottom) {
+          maxBottom = bottom;
         }
 
         newPositions.push({ top, left, size });
       });
 
+      // Add 20px buffer to the calculated height
+      setContainerHeight(maxBottom + 20);
       setPositions(newPositions);
     };
 
@@ -82,12 +93,15 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
 
   return (
     <div 
-      className="relative w-full h-[800px] mx-auto p-4"
-      style={{ maxWidth: '1200px' }}
+      ref={containerRef}
+      className="relative w-full mx-auto p-4"
+      style={{ 
+        maxWidth: '1200px',
+        height: `${containerHeight}px`
+      }}
     >
       {items.map((item, index) => {
         const { top, left, size } = positions[index] || {};
-        const imageSize = size * 0.85;
 
         return (
           <a
@@ -102,35 +116,44 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
               width: `${size}px`,
             }}
           >
-            <div className="relative w-full">
-              <img
-                src={item.track.album.images[0]?.url}
-                alt={`Cover for ${item.track.name}`}
-                className="w-full rounded-lg shadow-xl"
-                style={{
-                  height: `${imageSize}px`,
-                  objectFit: 'cover'
-                }}
-              />
+            <div className="relative group">
+              {/* 1:1 Cover Image with Text Overlay */}
               <div 
-                className="absolute w-full pt-3 space-y-1"
-                style={{ 
-                  top: `${imageSize}px`, // Position text below image
-                  minHeight: `${size - imageSize}px`
+                className="relative rounded-lg shadow-xl overflow-hidden"
+                style={{
+                  width: `${size}px`,
+                  height: `${size}px`,
                 }}
               >
-                <p 
-                  className="font-medium line-clamp-2 dark:text-white text-gray-900"
-                  style={{ fontSize: `${Math.max(14, size * 0.08)}px` }}
-                >
-                  {item.track.name}
-                </p>
-                <p 
-                  className="text-sm line-clamp-1 dark:text-gray-300 text-gray-600"
-                  style={{ fontSize: `${Math.max(12, size * 0.06)}px` }}
-                >
-                  {item.track.artists.map(artist => artist.name).join(', ')}
-                </p>
+                <img
+                  src={item.track.album.images[0]?.url}
+                  alt={`Cover for ${item.track.name}`}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:brightness-75"
+                />
+                
+                {/* Text overlay */}
+                <div className="absolute inset-0 flex flex-col justify-end p-3 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+                  <p 
+                    className="font-medium text-white line-clamp-2"
+                    style={{ 
+                      fontSize: `${Math.max(12, size * 0.1)}px`,
+                      lineHeight: 1.2,
+                      textShadow: '0 1px 3px rgba(0,0,0,0.8)'
+                    }}
+                  >
+                    {item.track.name}
+                  </p>
+                  <p 
+                    className="text-white/80 line-clamp-1"
+                    style={{ 
+                      fontSize: `${Math.max(10, size * 0.08)}px`,
+                      lineHeight: 1.2,
+                      textShadow: '0 1px 2px rgba(0,0,0,0.8)'
+                    }}
+                  >
+                    {item.track.artists.map(artist => artist.name).join(', ')}
+                  </p>
+                </div>
               </div>
             </div>
           </a>
@@ -140,7 +163,8 @@ const PlaylistTracks = ({ items }: PlaylistTracksProps) => {
   );
 };
 
-// Update your page component
+
+
 export default function Page() {
   const [data, setData] = useState<{ tracks?: { items: Track[] }, error?: string }>({});
   const [loading, setLoading] = useState(true);
