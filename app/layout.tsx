@@ -30,9 +30,9 @@ export default function RootLayout({
           <div className="header">
             <div className="container sticky mx-auto py-4 flex text-2xl border-b-2">
               <div className="flex-auto w-12">
-                <a className="px-8" href="./about">About</a>
-                <a className="px-8" href="./about">My works</a>
-                <a className="px-8" href="./about">Contact</a>
+                <a className="px-8" href="./">About</a>
+                <a className="px-8" href="./">My works</a>
+                <a className="px-8" href="./">Contact</a>
               </div>
               <div className="px-8 flex flex-auto w-20 flex-row">
                 <h1>silliness:</h1>
